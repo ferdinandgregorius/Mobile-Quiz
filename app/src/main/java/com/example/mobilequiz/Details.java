@@ -2,6 +2,7 @@ package com.example.mobilequiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +12,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.mobilequiz.Models.User;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +26,7 @@ public class Details extends AppCompatActivity {
 
     TextView firstname;
     TextView lastname;
+    TextView email;
     ImageView avatar;
 
     @Override
@@ -31,35 +36,17 @@ public class Details extends AppCompatActivity {
 
         firstname = findViewById(R.id.first_name_text_view);
         lastname = findViewById(R.id.last_name_text_view);
+        email = findViewById(R.id.email_view);
         avatar = findViewById(R.id.image_view);
 
-        String url = "https://reqres.in/api/users";
+        Bundle userBundle = getIntent().getExtras();
+        String jsonObject = userBundle.getString("selectedUser");
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(getStringRequest(url));
-    }
+        User user = new Gson().fromJson(jsonObject, User.class);
 
-    private StringRequest getStringRequest(String url){
-        return new StringRequest(Request.Method.GET, url, (response) -> {
-            try{
-                JSONObject object = new JSONObject(response);
-                JSONArray array = object.getJSONArray("data");
-                JSONObject user = array.getJSONObject(0);
-
-                firstname.setText(user.getString("first_name"));
-                lastname.setText(user.getString("last_name"));
-
-                Glide.with(this)
-                        .load(user.getString("avatar"))
-                        .circleCrop()
-                        .into(avatar);
-
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-
-        }, (error) -> {
-
-        });
+        firstname.setText(user.getFirstname());
+        lastname.setText(user.getLastname());
+        email.setText(user.getEmail());
+        Picasso.get().load(user.getAvatar()).into(avatar);
     }
 }

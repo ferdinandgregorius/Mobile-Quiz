@@ -15,8 +15,10 @@ public class Register extends AppCompatActivity {
     private Button backBtn;
     private EditText inputUsername;
     private EditText inputPassword;
+    private EditText confirmPassword;
     private String usernameString;
     private String passwordString;
+    private String confirmString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class Register extends AppCompatActivity {
 
         inputUsername = findViewById(R.id.username_field);
         inputPassword = findViewById(R.id.password_field);
+        confirmPassword = findViewById(R.id.confirm_field);
 
         registerBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,10 +38,11 @@ public class Register extends AppCompatActivity {
 
                 usernameString = inputUsername.getText().toString();
                 passwordString = inputPassword.getText().toString();
+                confirmString = confirmPassword.getText().toString();
 
                 if(usernameString.equalsIgnoreCase("") && passwordString.equalsIgnoreCase("")){
                     Toast.makeText(getApplicationContext(), "Please enter a Username and Password!", Toast.LENGTH_SHORT).show();
-                }else if(!usernameString.equalsIgnoreCase(passwordString)){
+                }else if(!confirmString.equalsIgnoreCase(passwordString)){
                     Toast.makeText(getApplicationContext(), "Password confirmation does not match!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "User Registered!", Toast.LENGTH_SHORT).show();

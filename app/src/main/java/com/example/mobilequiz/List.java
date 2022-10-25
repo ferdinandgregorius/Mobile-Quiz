@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.mobilequiz.Models.User;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -112,6 +114,15 @@ class DataModelAdapter extends RecyclerView.Adapter<DataModelViewHolder> {
         holder.lastName.setText(user.getLastname());
         holder.email.setText(user.getEmail());
         Picasso.get().load(user.getAvatar()).into(holder.avatar);
+
+        holder.parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Details.class);
+                intent.putExtra("selectedUser", new Gson().toJson(user));
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
